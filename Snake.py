@@ -13,13 +13,18 @@ players_body = [[Vector2(5,   3), Vector2(4 ,  3), Vector2(3 , 3)],
 
 players_color = [RED, GREEN, CYAN, VIOLET] 
 
+players_direction = [Vector2(1, 0), Vector2(0, 1),
+                     Vector2(-1, 0),Vector2(0,-1)]
+
 class Snake: 
     def __init__(self, cell_size, player):
         self.body = players_body[player]
         self.color = players_color[player]
+        self.player = player
         self.cell_size = cell_size
         self.is_alive = True
-        self.direction = Vector2(0, 1)
+        self.direction = players_direction[player]
+        self.new_block = False
     
     def get_snake(self):
         fruit_rects = []
@@ -31,6 +36,20 @@ class Snake:
         return fruit_rects
 
     def move_snake(self):
-        body_copy = self.body[:-1]
-        body_copy.insert(0, body_copy[0] + self.direction)
-        self.body = body_copy
+        if self.is_alive:
+            if self.new_block:
+                body_copy = self.body[:]
+                self.new_block = False
+            else:
+                body_copy = self.body[:-1]
+            body_copy.insert(0, body_copy[0] + self.direction)
+            self.body = body_copy
+
+    def add_block(self):
+        self.new_block = True
+
+    def die(self):
+        self.is_alive = False
+        gray = sum(self.color)/3
+        self.color = (gray, gray, gray)
+

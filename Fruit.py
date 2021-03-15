@@ -15,3 +15,9 @@ class Fruit:
                 int(self.pos.y * self.cell_size),
                 self.cell_size, self.cell_size)
         return fruit_rect
+
+    def randomize(self):
+        self.x = random.randint(0, self.cell_number - 1)
+        self.y = random.randint(0, self.cell_number - 1)        
+        self.pos = Vector2(self.x, self.y)
+
