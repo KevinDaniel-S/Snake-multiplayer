@@ -53,10 +53,13 @@ class Main:
             draw_fruit(fruit)
         for snake in self.snakes:
             draw_snake(snake)
+        self.draw_score()
 
     def check_collision(self):
         for snake in self.snakes:
-            for fruit in self.fruits:               
+            for fruit in self.fruits:
+                if fruit.pos in snake.body[1:]:
+                    fruit.randomize()
                 if snake.body[0] == fruit.pos:
                     fruit.randomize()
                     snake.add_block()
@@ -82,7 +85,20 @@ class Main:
                 if len_snake > best:
                     best = len_snake
                     winner = snake.player
-            self.textsurface = myfont.render(f'Game over  Winner is player: {winner+1}', False, (0, 0, 0))
+            self.textsurface = myfont.render(f'Game over  Winner is player: {winner+1}', True, (0, 0, 0))
+
+    def draw_score(self):
+        score_x = int(cell_size * cell_number - 200)
+        score_y = int(cell_size * cell_number - 40)
+        for snake in self.snakes:
+            score = len(snake.body)-3
+            score_surface = myfont.render(str(score), True, (56, 74, 12))
+            score_rect = score_surface.get_rect(center = (score_x, score_y))
+            color_rect = score_surface.get_rect(center = (score_x, score_y+20))
+            screen.blit(score_surface, score_rect)
+            pygame.draw.rect(screen, snake.original, color_rect)
+            score_x += 40
+
 
 GRAY = (98, 155, 98)
 GREEN = (175, 215, 70)

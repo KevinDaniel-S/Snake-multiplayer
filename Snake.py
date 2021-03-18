@@ -20,6 +20,7 @@ class Snake:
     def __init__(self, cell_size, player):
         self.body = players_body[player]
         self.color = players_color[player]
+        self.original = self.color
         self.player = player
         self.cell_size = cell_size
         self.is_alive = True
